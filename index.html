@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GonzoGonzo</title>
+<meta name="description" content="Music. Games. Story. Adventure. One GonzoGonzo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Pacifico&family=Audiowide&family=Playfair+Display:ital,wght@1,500&family=Special+Elite&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0B0908;
+    --orange: #FF6B1A;
+    --mute: #8a7a68;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background:
+      radial-gradient(90% 50% at 50% 0%, rgba(255,107,26,0.08) 0%, rgba(11,9,8,0) 55%),
+      linear-gradient(180deg, #0E0B0A 0%, var(--black) 40%, #080606 100%);
+    color: #EFE6D6;
+    font-family: 'IBM Plex Mono', monospace;
+    display: flex; flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-user-select: none; user-select: none;
+  }
+
+  /* ---- Marquee ---- */
+  .marquee { text-align: center; padding: 44px 16px 12px; }
+  .wordmark {
+    font-family: 'Monoton', cursive;
+    font-size: clamp(30px, 6.5vw, 64px);
+    letter-spacing: 0.06em;
+    color: var(--orange);
+    text-shadow:
+      0 0 6px rgba(255,107,26,0.55),
+      0 0 22px rgba(255,107,26,0.35),
+      0 0 60px rgba(255,107,26,0.18);
+  }
+  .tagline {
+    margin-top: 14px;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    word-spacing: 1.6em;
+    text-transform: uppercase;
+    color: var(--mute);
+  }
+
+  /* ---- The wall of signs ---- */
+  .wall {
+    flex: 1;
+    width: min(1120px, 100%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    gap: 52px 48px;
+    padding: 44px 26px 56px;
+  }
+
+  .sign {
+    --core: #fff;
+    --tube: #fff;
+    --glowA: rgba(255,255,255,0.5);
+    --glowB: rgba(255,255,255,0.25);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    text-decoration: none;
+    color: var(--core);
+    filter: brightness(0.72) saturate(0.9);
+    transform: rotate(var(--tilt, 0deg));
+    transition: filter 220ms ease, transform 260ms cubic-bezier(0.2, 0.8, 0.3, 1.2);
+  }
+  .sign .txt {
+    text-shadow:
+      0 0 4px var(--core),
+      0 0 12px var(--tube),
+      0 0 30px var(--glowA),
+      0 0 70px var(--glowB);
+    white-space: nowrap;
+  }
+  .sign:hover, .sign:focus-visible {
+    filter: brightness(1.12) saturate(1.05);
+    transform: rotate(0deg) scale(1.045);
+    z-index: 2;
+  }
+  .sign:focus-visible { outline: 2px dashed #EFE6D6; outline-offset: 10px; }
+
+  /* --- Top billing: Arcade — dotted marquee-bulb frame --- */
+  .arcade {
+    --tilt: -1.6deg;
+    --core: #FFD9BC; --tube: var(--orange);
+    --glowA: rgba(255,107,26,0.6); --glowB: rgba(255,107,26,0.25);
+    grid-column: 1 / -1;
+    justify-self: center;
+    border: 5px dotted var(--tube);
+    border-radius: 14px;
+    padding: 32px 64px;
+    box-shadow:
+      0 0 10px var(--glowA),
+      0 0 34px var(--glowB),
+      inset 0 0 14px var(--glowB),
+      0 0 90px var(--glowB);
+  }
+  .arcade .txt {
+    font-family: 'Audiowide', cursive;
+    font-size: clamp(30px, 5.2vw, 56px);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* --- Row two, left: Music Room — no frame, freestanding script
+         with a neon underline swash --- */
+  .music {
+    --tilt: -2.2deg;
+    --core: #FFE9BF; --tube: #E8B84B;
+    --glowA: rgba(232,184,75,0.55); --glowB: rgba(232,184,75,0.22);
+    margin-top: 10px;
+    padding: 10px 6px;
+  }
+  .music .txt {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(26px, 3.4vw, 42px);
+  }
+
+  /* --- Row two, center: The Blog — elegant double-tube oval --- */
+  .blog {
+    --tilt: 0deg;
+    --core: #FFF7EA; --tube: #EFE6D6;
+    --glowA: rgba(239,230,214,0.5); --glowB: rgba(239,230,214,0.18);
+    justify-self: center;
+    border: 2px solid var(--tube);
+    border-radius: 60px;
+    padding: 26px 50px;
+    box-shadow: 0 0 6px var(--glowB), 0 0 18px var(--glowB);
+    transition: filter 220ms ease, box-shadow 260ms ease,
+                transform 260ms cubic-bezier(0.2, 0.8, 0.3, 1.2);
+  }
+  .blog:hover, .blog:focus-visible {
+    box-shadow:
+      0 0 14px var(--glowA),
+      0 0 44px var(--glowB),
+      inset 0 0 16px var(--glowB),
+      0 0 120px var(--glowB);
+  }
+  .blog .txt {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(24px, 3.2vw, 40px);
+    line-height: 1;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .blog { animation: flicker 9s infinite; }
+  }
+  @keyframes flicker {
+    0%, 100% { filter: brightness(0.72) saturate(0.9); }
+    61%      { filter: brightness(0.72) saturate(0.9); }
+    62%      { filter: brightness(0.3); }
+    63%      { filter: brightness(0.75); }
+    64.5%    { filter: brightness(0.28); }
+    65.5%    { filter: brightness(0.72) saturate(0.9); }
+  }
+  .blog:hover, .blog:focus-visible { animation: none; }
+  /* keep the double ring from clashing with the focus ring */
+  .blog:focus-visible { outline: 2px dashed #EFE6D6; outline-offset: 12px; }
+
+  /* --- Row two, right: Wanderer — no frame. Dim typewriter letters
+         over a winding path that trails off into the dark. --- */
+  .wander {
+    --tilt: 1.4deg;
+    --core: #FFD9F2; --tube: #D8459E;
+    --glowA: rgba(216,69,158,0.6); --glowB: rgba(216,69,158,0.26);
+    margin-top: 16px;
+    padding: 10px 6px;
+    filter: brightness(0.8) saturate(1);
+  }
+  .wander .txt {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(24px, 3.1vw, 38px);
+    letter-spacing: 0.2em;
+    text-transform: lowercase;
+    text-shadow:
+      0 0 3px var(--core),
+      0 0 10px var(--tube),
+      0 0 26px var(--glowA),
+      0 0 60px var(--glowB);
+  }
+  .wander .path { display: block; margin-top: 6px; overflow: visible; }
+  .wander .path path {
+    fill: none;
+    stroke: url(#fadeTrail);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 2 9;
+    filter:
+      drop-shadow(0 0 3px var(--core))
+      drop-shadow(0 0 9px var(--tube));
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .wander { animation: breathe 7s ease-in-out infinite; }
+  }
+  @keyframes breathe {
+    0%, 100% { filter: brightness(0.76) saturate(1); }
+    50%      { filter: brightness(0.94) saturate(1.05); }
+  }
+  .wander:hover, .wander:focus-visible {
+    animation: none;
+    filter: brightness(1.18) saturate(1.1);
+  }
+
+  footer {
+    text-align: center; padding: 16px;
+    font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: #55483a;
+  }
+
+  /* ---- Narrow desktop / tablet: 2 columns, blog stays centered ---- */
+  @media (max-width: 1040px) {
+    .wall {
+      grid-template-columns: repeat(2, auto);
+      gap: 44px 40px;
+    }
+    .arcade { grid-column: 1 / -1; }
+    .blog   { grid-column: 1 / -1; justify-self: center; }
+  }
+
+  /* ---- Mobile: one column of signs ---- */
+  @media (max-width: 720px) {
+    .wall {
+      grid-template-columns: 1fr;
+      gap: 36px;
+      padding: 34px 18px 44px;
+    }
+    .sign, .arcade, .music, .blog, .wander {
+      grid-column: auto;
+      justify-self: center;
+      margin: 0;
+    }
+    .arcade { --tilt: -1.1deg; padding: 24px 40px; }
+    .music  { --tilt: -1.3deg; }
+    .blog   { padding: 20px 40px; }
+    .wander { --tilt: 1deg; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sign { transition: none; }
+    .blog, .wander { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- shared gradient for the wanderer trail -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="fadeTrail" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#D8459E" stop-opacity="0.95"/>
+      <stop offset="0.7" stop-color="#D8459E" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#D8459E" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<header class="marquee">
+  <div class="wordmark">GONZOGONZO</div>
+  <div class="tagline">Music Games Story Adventure</div>
+</header>
+
+<nav class="wall" aria-label="Choose a destination">
+  <a class="sign arcade" href="/arcade/" aria-label="Arcade">
+    <span class="txt">Arcade</span>
+  </a>
+  <a class="sign music" href="/music/" aria-label="Music Room">
+    <span class="txt">Music Room</span>
+  </a>
+  <a class="sign blog" href="/blog/" aria-label="The Blog">
+    <span class="txt">The Blog</span>
+  </a>
+  <a class="sign wander" href="/wanderer/" aria-label="Wanderer">
+    <span class="txt">wanderer</span>
+    <svg class="path" width="170" height="22" viewBox="0 0 170 22" aria-hidden="true">
+      <path d="M4 6 C 28 20, 52 2, 78 12 S 122 22, 142 10 S 162 4, 168 8"/>
+    </svg>
+  </a>
+</nav>
+
+<footer>A GonzoGonzo Production</footer>
+
+<script>
+  // Keys 1–4, top to bottom: Arcade, Music Room, The Blog, Wanderer.
+  const doors = ['/arcade/', '/music/', '/blog/', '/wanderer/'];
+  window.addEventListener('keydown', e => {
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 4 && !e.metaKey && !e.ctrlKey) location.href = doors[n - 1];
+  });
+  // Firecloud hook (step 7 of the migration): include /firecloud.js in <head> once it exists.
+</script>
+</body>
+</html>
